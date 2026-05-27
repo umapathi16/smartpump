@@ -1,0 +1,10 @@
+[
+    {
+        "StartDate": "2026-05-25",
+        "EndDate": "2026-05-30",
+        "StartTime": "08:00:00",
+        "EndTime": "08:30:00",
+        "PumpMode": 1,
+        "StartStandbyIfDutyTrip": true
+    }
+]

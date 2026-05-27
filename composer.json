@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php-mqtt/client": "^2.3",
+        "workerman/mqtt": "^2.2"
+    }
+}
