@@ -1,10 +1,26 @@
 [
     {
-        "StartDate": "2026-05-25",
-        "EndDate": "2026-05-30",
-        "StartTime": "08:00:00",
-        "EndTime": "08:30:00",
+        "StartDate": "2026-05-27",
+        "EndDate": "2026-05-27",
+        "StartTime": "16:19:00",
+        "EndTime": "16:31:00",
+        "PumpMode": 0,
+        "StartStandbyIfDutyTrip": true
+    },
+    {
+        "StartDate": "2026-05-27",
+        "EndDate": "2026-05-27",
+        "StartTime": "16:20:00",
+        "EndTime": "16:33:00",
         "PumpMode": 1,
+        "StartStandbyIfDutyTrip": true
+    },
+    {
+        "StartDate": "2026-05-27",
+        "EndDate": "2026-05-27",
+        "StartTime": "16:24:00",
+        "EndTime": "16:56:00",
+        "PumpMode": 2,
         "StartStandbyIfDutyTrip": true
     }
 ]

@@ -197,13 +197,19 @@ switch ($command) {
 
                 [
 
-                    "StartDate" => "2026-05-25",
+                    "StartDate" => date('Y-m-d'),
 
-                    "EndDate" => "2026-05-30",
+                    "EndDate" => date('Y-m-d'),
 
-                    "StartTime" => "08:00:00",
+                    "StartTime" => date(
+                        'H:i:s',
+                        strtotime('+30 seconds')
+                    ),
 
-                    "EndTime" => "08:30:00",
+                    "EndTime" => date(
+                        'H:i:s',
+                        strtotime('+2 minutes')
+                    ),
 
                     "PumpMode" => 1,
 
@@ -240,13 +246,19 @@ switch ($command) {
 
                 [
 
-                    "StartDate" => "2026-05-26",
+                    "StartDate" => date('Y-m-d'),
 
-                    "EndDate" => "2026-05-31",
+                    "EndDate" => date('Y-m-d'),
 
-                    "StartTime" => "10:00:00",
+                    "StartTime" => date(
+                        'H:i:s',
+                        strtotime('+30 seconds')
+                    ),
 
-                    "EndTime" => "10:30:00",
+                    "EndTime" => date(
+                        'H:i:s',
+                        strtotime('+2 minutes')
+                    ),
 
                     "PumpMode" => 1,
 

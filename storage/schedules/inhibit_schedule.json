@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "StartDate": "2026-05-26",
+        "EndDate": "2026-05-31",
+        "StartTime": "10:00:00",
+        "EndTime": "10:30:00",
+        "PumpMode": 1,
+        "StartPumpIfRoofTankLowLow": true,
+        "MuteTransferPumpAlarm": true,
+        "RunPumpToMakeRoofTankHighBeforeReleaseAlarm": true
+    }
+]

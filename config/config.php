@@ -12,3 +12,7 @@ function config($key)
 
     return $configs[$file][$value] ?? null;
 }
+
+date_default_timezone_set(
+    'Asia/Singapore'
+);

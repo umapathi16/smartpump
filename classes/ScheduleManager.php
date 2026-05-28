@@ -17,11 +17,6 @@ class ScheduleManager
             . '/../storage/schedules/inhibit_schedule.json';
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Save Start Schedules
-    |--------------------------------------------------------------------------
-    */
 
     public function saveStartSchedules($schedules): bool
     {
@@ -34,11 +29,6 @@ class ScheduleManager
         ) !== false;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Get Start Schedules
-    |--------------------------------------------------------------------------
-    */
 
     public function getStartSchedules(): array
     {
@@ -56,11 +46,7 @@ class ScheduleManager
             ?? [];
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Save Inhibit Schedules
-    |--------------------------------------------------------------------------
-    */
+
 
     public function saveInhibitSchedules($schedules): bool
     {
@@ -73,11 +59,7 @@ class ScheduleManager
         ) !== false;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Get Inhibit Schedules
-    |--------------------------------------------------------------------------
-    */
+
 
     public function getInhibitSchedules(): array
     {

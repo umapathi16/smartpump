@@ -5,8 +5,8 @@
 | Smart Pump Gateway
 |--------------------------------------------------------------------------
 |
-| Version : v1.1.0
-| Updated : 2026-05-26
+| Version : v1.2.0
+| Updated : 2026-05-28
 |
 | Changes:
 | - MQTT command handling
@@ -16,7 +16,7 @@
 | - Schedule command support
 | - ACK implementation
 | - Alarm cancel implemented 
-|
+| - Schedule start and Inhibit Schedules are implemented
 */
 
 require_once __DIR__ . '/config/config.php';
@@ -26,11 +26,16 @@ require_once __DIR__ . '/classes/MQTTClient.php';
 require_once __DIR__ . '/classes/ICTController.php';
 require_once __DIR__ . '/classes/IncomingCommandHandler.php';
 require_once __DIR__ . '/classes/EventPublisher.php';
+require_once __DIR__ . '/classes/ScheduleManager.php';
+require_once __DIR__ . '/classes/ScheduleEngine.php';
+require_once __DIR__. '/classes/InhibitScheduleEngine.php';
 
 echo "====================================\n";
-echo "Version: v1.1.0\n";
+echo "Version: v1.2.0\n";
 echo " SMART PUMP MQTT GATEWAY STARTED\n";
 echo "====================================\n";
+
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 try {
 
@@ -56,6 +61,11 @@ try {
 
     $eventPublisher = new EventPublisher($mqtt);
 
+    $scheduleManager = new ScheduleManager();
+    $scheduleEngine = new ScheduleEngine($ict, $scheduleManager);
+
+    $inhibitScheduleEngine = new InhibitScheduleEngine($ict,$scheduleManager);
+
     echo "[SYSTEM] Gateway Running...\n";
 
     // Load Initial States
@@ -73,11 +83,25 @@ try {
 
     echo "[SYSTEM] Initial input states loaded\n";
 
+
+    //  Schedule Runtime State
+
+    $scheduleStarted = [];
+
     while (true) {
 
-
+        //echo date('Y-m-d H:i:s') . "\n";
         $mqtt->loop();
         $inputs = $ict->readInputs();
+
+        // Schedule Engine
+        $isAutoMode = $inputs['AUTO_ON']['status'] === 'ACTIVE';  //true; 
+
+        if ($isAutoMode) {
+            $scheduleEngine->process();
+            $inhibitScheduleEngine->process($inputs);
+        }
+
 
         foreach ($inputs as $label => $data) {
 
@@ -92,7 +116,7 @@ try {
 
             if ($currentStatus !== $previousStatus) {
 
-                echo "\n[". date('Y-m-d H:i:s'). "] [STATE CHANGE] {$label} => {$currentStatus}\n";
+                echo "\n[" . date('Y-m-d H:i:s') . "] [STATE CHANGE] {$label} => {$currentStatus}\n";
 
                 //    Pump 1 Events
 
@@ -310,7 +334,7 @@ try {
                         ]
                     );
                 }
- 
+
 
                 if (
                     $label === 'IS_POWER_FAILURE'
@@ -338,7 +362,7 @@ try {
                     );
                 }
 
-                
+
                 if (
                     $label === 'ROOF_TANK_LOW'
                     &&
@@ -437,7 +461,7 @@ try {
                     );
                 }
 
-               
+
 
                 if (
                     $label === 'SUCTION_TANK_LOW'
