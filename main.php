@@ -5,7 +5,7 @@
 | Smart Pump Gateway
 |--------------------------------------------------------------------------
 |
-| Version : v1.2.0
+| Version : v1.3.0
 | Updated : 2026-05-28
 |
 | Changes:
@@ -17,6 +17,7 @@
 | - ACK implementation
 | - Alarm cancel implemented 
 | - Schedule start and Inhibit Schedules are implemented
+| - Certificate renewal implemented
 */
 
 require_once __DIR__ . '/config/config.php';

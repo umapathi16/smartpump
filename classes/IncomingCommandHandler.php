@@ -3,6 +3,7 @@
 require_once __DIR__ . '/ICTController.php';
 require_once __DIR__ . '/Logger.php';
 require_once __DIR__ . '/ScheduleManager.php';
+require_once __DIR__ . '/CertificateManager.php';
 
 class IncomingCommandHandler
 {
@@ -12,11 +13,14 @@ class IncomingCommandHandler
 
     private $scheduleManager;
 
+    private $certificateManager;
+
     public function __construct($mqtt, $ict)
     {
         $this->mqtt = $mqtt;
         $this->ict = $ict;
         $this->scheduleManager = new ScheduleManager();
+        $this->certificateManager = new CertificateManager();
     }
 
 
@@ -204,6 +208,49 @@ class IncomingCommandHandler
                     echo "[SCHEDULE] Returned Inhibit Schedules\n";
 
                     continue 2;
+
+                case 'smartpump/command#renewcacert':
+
+                    $certificate =
+
+                        $cmd['Parameter']['CACertificate']
+                        ?? '';
+
+                    $success =
+
+                        $this->certificateManager
+                        ->renewCACertificate(
+                            $certificate
+                        );
+
+                    echo "[CERT] CA Certificate Renewed\n";
+
+                    break;
+                case 'smartpump/command#renewclientcert':
+
+                    $certificate =
+
+                        $cmd['Parameter']['ClientCertificate']
+                        ?? '';
+
+                    $privateKey =
+
+                        $cmd['Parameter']['ClientKey']
+                        ?? '';
+
+                    $success =
+
+                        $this->certificateManager
+                        ->renewClientCertificate(
+
+                            $certificate,
+
+                            $privateKey
+                        );
+
+                    echo "[CERT] Client Certificate Renewed\n";
+
+                    break;
 
                 default:
 

@@ -183,6 +183,64 @@ switch ($command) {
 
         break;
 
+    case 'renewcacert':
+
+        $parameter = [
+
+            "CACertificate" =>
+
+            "-----BEGIN CERTIFICATE-----
+MIIDvzCCAqegAwIBAgIJAM3qDlBmPCVPMA0GCSqGSIb3DQEBCwUAMHYxCzAJBgNV
+BAYTAlNHMQwwCgYDVQQIDANTSU4xCzAJBgNVBAcMAlNHMQ0wCwYDVQQKDARUVElU
+MQswCQYDVQQLDAJJVDEXMBUGA1UEAwwOMTkyLjIxMC4yMTQuMjMxFzAVBgkqhkiG
+9w0BCQEWCGphQGNsLnNnMB4XDTI2MDQyNTAzMTA0N1oXDTMxMDQyNTAzMTA0N1ow
+djELMAkGA1UEBhMCU0cxDDAKBgNVBAgMA1NJTjELMAkGA1UEBwwCU0cxDTALBgNV
+BAoMBFRUSVQxCzAJBgNVBAsMAklUMRcwFQYDVQQDDA4xOTIuMjEwLjIxNC4yMzEX
+MBUGCSqGSIb3DQEJARYIamFAY2wuc2cwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQDPbhNyfFm8wJRik6AysHqNXIV6gw+X00JjSrr+DN86pnfDLTLNxxSy
+NPHAMrxKHYNuDfuKUN0ExArNnlkjiaeXVVyzYlWFjrfZPGckG7m6YFJjLLO03B4g
+ES+WmZkvH2KWtqa+qfbTEiv07VBwFmR0cAkC1UG8W1qloHpsC/yEfabAV0Lutavw
+73SpyCOp62FDtsp8wArcaTEqNkBoeUA71tNhvlrHFiDV71oilzwc+OZbBggmSuvh
+arpU2l23yWAZXdbdrVZW2Q+ZD4dd432irvlUEDfTLagcYBOwf+1D8FrMRW7pI0iB
+9Fq+prnU4uq8ZsKMvKW93mHgsnykFQRVAgMBAAGjUDBOMB0GA1UdDgQWBBR3nzcX
+ofLnv2IHftILWD4bOOBLlTAfBgNVHSMEGDAWgBR3nzcXofLnv2IHftILWD4bOOBL
+lTAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCpeJBSTUA8DfWHB1qa
+d1SUltJiPRutGADlOS3wx/1jIopaAT5zPUmUivLmORdjHPsHIH1uv+LKnrSlazF1
+W5gQwS5tehFAIMTEYRHuuthR1uwPCmup3+Q5ztoK+16O+GYKfn5Os+y7OpFZhpqC
+ifvKq6dMLTDn6AaTkQuVnYhavmP51ZQgj/X0NBQVVjj0bWwL7yE428jVBqoqxIke
+Kam5rNiSlw2DvzBmo+2+9hm60VpjmQw6MRsjoRcWLk7ILTlF41m6gkDMIo40B/i3
+jfyAMuYU5gA2jAlms+e462d9xGxIwLgOSWlVLMdPkquVP9m6oV1GAlANel/eHCWH
+WoP8
+-----END CERTIFICATE-----"
+        ];
+
+        break;
+
+
+    case 'renewclientcert':
+
+        $parameter = [
+
+            "ClientCertificate" =>
+
+            "-----BEGIN CERTIFICATE-----\n"
+
+                . "TEST_CLIENT_CERTIFICATE\n"
+
+                . "-----END CERTIFICATE-----",
+
+            "ClientKey" =>
+
+            "-----BEGIN PRIVATE KEY-----\n"
+
+                . "TEST_PRIVATE_KEY\n"
+
+                . "-----END PRIVATE KEY-----"
+        ];
+
+        break;
+
+
     /*
     |--------------------------------------------------------------------------
     | Set Schedule Start Config
