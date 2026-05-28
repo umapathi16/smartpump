@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/EventConfig.php';
 class EventPublisher
 {
     private $mqtt;
@@ -9,45 +10,74 @@ class EventPublisher
         $this->mqtt = $mqtt;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Publish Event
-    |--------------------------------------------------------------------------
-    */
 
-    public function publish(
-        $eventType,
-        $parameters = []
-    ) {
+    public function publish($eventType, $parameters = [])
+    {
+        $config = EventConfig::get($eventType); 
+        $senderId =
+
+            $parameters['SenderId']
+            ??
+
+            config('device.sender_id');
+
+        $sensorId =
+
+            $parameters['SensorId']
+            ??
+
+            config('device.sensor_id');
+
+        $resourcePath =
+
+            $parameters['Resourcepath']
+            ??
+
+            config('device.resource_path');
+
+        
+
+        unset(
+
+            $parameters['SenderId'],
+
+            $parameters['SensorId'],
+
+            $parameters['Resourcepath']
+        );
 
         $payload = [
 
             "SenderId" =>
-                config('device.sender_id'),
+            $senderId,
 
             "SensorId" =>
-                config('device.sensor_id'),
+            $sensorId,
 
             "Resourcepath" =>
-                config('device.resource_path'),
+            $resourcePath,
 
             "EventId" =>
-                uniqid('EVT-'),
+            uniqid('EVT-'),
 
             "EventType" =>
-                $eventType,
+            $eventType,
 
             "Parameters" => array_merge(
 
                 [
 
                     "Time" =>
-                        date('Y-m-d H:i:s'),
+                    date('Y-m-d H:i:s'),
 
-                    "Severity" => 6,
+                    "Severity" =>
+                    $config['Severity'],
 
                     "SensorStatus" =>
-                        "online"
+                    "online",
+
+                    "FaultCode" =>
+                    $config['FaultCode'],
                 ],
 
                 $parameters
@@ -57,6 +87,8 @@ class EventPublisher
         $this->mqtt->publish(
             $payload
         );
+
+        
 
         echo "[MQTT EVENT PUBLISHED] {$eventType}\n";
     }

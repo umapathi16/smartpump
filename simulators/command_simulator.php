@@ -44,6 +44,10 @@ if (!$command) {
     echo "php command_simulator.php setscheduleinhibitconfig\n";
     echo "php command_simulator.php getscheduleinhibitconfig\n";
 
+    echo "php command_simulator.php renewcacert\n";
+    
+    echo "php command_simulator.php renewclientcert\n";
+
 
 
     exit;

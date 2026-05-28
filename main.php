@@ -5,8 +5,8 @@
 | Smart Pump Gateway
 |--------------------------------------------------------------------------
 |
-| Version : v1.4.0
-| Updated : 2026-05-28
+| Version : v1.5.0
+| Updated : 2026-05-29
 |
 | Changes:
 | - MQTT command handling
@@ -19,6 +19,7 @@
 | - Schedule start and Inhibit Schedules are implemented
 | - Certificate renewal implemented
 | - Aligned Recurring daily schedule time range for Schedule start and Inhibit 
+| - Updated Severity and Faultcode as per the ICT document  
 */
 
 require_once __DIR__ . '/config/config.php';
@@ -30,7 +31,7 @@ require_once __DIR__ . '/classes/IncomingCommandHandler.php';
 require_once __DIR__ . '/classes/EventPublisher.php';
 require_once __DIR__ . '/classes/ScheduleManager.php';
 require_once __DIR__ . '/classes/ScheduleEngine.php';
-require_once __DIR__. '/classes/InhibitScheduleEngine.php';
+require_once __DIR__ . '/classes/InhibitScheduleEngine.php';
 
 echo "====================================\n";
 echo "Version: v1.4.0\n";
@@ -66,7 +67,7 @@ try {
     $scheduleManager = new ScheduleManager();
     $scheduleEngine = new ScheduleEngine($ict, $scheduleManager);
 
-    $inhibitScheduleEngine = new InhibitScheduleEngine($ict,$scheduleManager);
+    $inhibitScheduleEngine = new InhibitScheduleEngine($ict, $scheduleManager);
 
     echo "[SYSTEM] Gateway Running...\n";
 
@@ -86,9 +87,6 @@ try {
     echo "[SYSTEM] Initial input states loaded\n";
 
 
-    //  Schedule Runtime State
-
-    $scheduleStarted = [];
 
     while (true) {
 
@@ -181,48 +179,32 @@ try {
 
                         [
 
-                            "PumpTripStatus" =>
-                            "TripON",
+                            "PumpTripStatus" => "TripON",
 
-                            "Description" =>
-                            "TransferPump1 Trip Failure",
-
-                            "FaultCode" =>
-                            "SH-WPOE101002"
+                            "Description" => "TransferPump1 Trip Failure",
                         ]
                     );
                 }
 
                 // Pump 2 Events
 
-                if (
-                    $label === 'PUMP2_RUNNING'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'PUMP2_RUNNING' && $currentStatus === 'ACTIVE') {
 
                     echo "[INFO] Pump 2 RUNNING\n";
 
                     $eventPublisher->publish(
 
                         "Waterpump/pump#started",
-
                         [
 
-                            "PumpRunStatus" =>
-                            "Running",
+                            "PumpRunStatus" => "Running",
 
-                            "Description" =>
-                            "TransferPump2"
+                            "Description" => "TransferPump2"
                         ]
                     );
                 }
 
-                if (
-                    $label === 'PUMP2_STOPPED'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'PUMP2_STOPPED' && $currentStatus === 'ACTIVE') {
 
                     echo "[INFO] Pump 2 STOPPED\n";
 
@@ -231,21 +213,13 @@ try {
                         "Waterpump/pump#stopped",
 
                         [
-
-                            "PumpRunStatus" =>
-                            "Stopped",
-
-                            "Description" =>
-                            "TransferPump2"
+                            "PumpRunStatus" => "Stopped",
+                            "Description" => "TransferPump2"
                         ]
                     );
                 }
 
-                if (
-                    $label === 'PUMP2_TRIP'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'PUMP2_TRIP' && $currentStatus === 'ACTIVE') {
 
                     echo "[ALARM] Pump 2 TRIPPED!\n";
 
@@ -254,26 +228,15 @@ try {
                         "Waterpump/pump#tripfailure",
 
                         [
-
-                            "PumpTripStatus" =>
-                            "TripON",
-
-                            "Description" =>
-                            "TransferPump2 Trip Failure",
-
-                            "FaultCode" =>
-                            "SH-WPOE101002"
+                            "PumpTripStatus" => "TripON",
+                            "Description" => "TransferPump2 Trip Failure",
                         ]
                     );
                 }
 
                 //    Pump Mode Events
 
-                if (
-                    $label === 'MANUAL_ON'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'MANUAL_ON' && $currentStatus === 'ACTIVE') {
 
                     echo "[MODE] MANUAL Mode\n";
 
@@ -282,18 +245,12 @@ try {
                         "Waterpump/system#reading",
 
                         [
-
-                            "SystemPumpMode" =>
-                            "Manual"
+                            "SystemPumpMode" => "Manual"
                         ]
                     );
                 }
 
-                if (
-                    $label === 'AUTO_ON'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'AUTO_ON' && $currentStatus === 'ACTIVE') {
 
                     echo "[MODE] AUTO Mode\n";
 
@@ -302,20 +259,14 @@ try {
                         "Waterpump/system#reading",
 
                         [
-
-                            "SystemPumpMode" =>
-                            "Auto"
+                            "SystemPumpMode" => "Auto"
                         ]
                     );
                 }
 
                 // Inhibit Events
 
-                if (
-                    $label === 'IS_INHIBIT_ON'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'IS_INHIBIT_ON' && $currentStatus === 'ACTIVE') {
 
                     echo "[INFO] Inhibit ACTIVE\n";
 
@@ -324,25 +275,14 @@ try {
                         "Waterpump/system#inhibitactivated",
 
                         [
-
-                            "InhibitStatus" =>
-                            "On",
-
-                            "Description" =>
-                            "Pump Inhibit Activated",
-
-                            "FaultCode" =>
-                            "SH-WPOE101001"
+                            "InhibitStatus" => "On",
+                            "Description" => "Pump Inhibit Activated",
                         ]
                     );
                 }
 
 
-                if (
-                    $label === 'IS_POWER_FAILURE'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'IS_POWER_FAILURE' && $currentStatus === 'ACTIVE') {
 
                     echo "[ALARM] Power Failure!\n";
 
@@ -351,25 +291,14 @@ try {
                         "Waterpump/system#powerfailure",
 
                         [
-
-                            "CPSupplyPowerStatus" =>
-                            "Off",
-
-                            "Description" =>
-                            "Power Failure",
-
-                            "FaultCode" =>
-                            "SH-WPOE101003"
+                            "CPSupplyPowerStatus" => "Off",
+                            "Description" => "Power Failure",
                         ]
                     );
                 }
 
 
-                if (
-                    $label === 'ROOF_TANK_LOW'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'ROOF_TANK_LOW' && $currentStatus === 'ACTIVE') {
 
                     echo "[WARNING] Roof Tank LOW\n";
 
@@ -378,24 +307,13 @@ try {
                         "Waterpump/system#criticallylow",
 
                         [
-
-                            "RoofTopTankLevel" =>
-                            "Low",
-
-                            "Description" =>
-                            "Roof Tank Low Level",
-
-                            "FaultCode" =>
-                            "SH-WPOE101006"
+                            "RoofTopTankLevel" => "Low",
+                            "Description" => "Roof Tank Low Level",
                         ]
                     );
                 }
 
-                if (
-                    $label === 'ROOF_TANK_LOW_LOW'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'ROOF_TANK_LOW_LOW' && $currentStatus === 'ACTIVE') {
 
                     echo "[ALARM] Roof Tank LOW LOW\n";
 
@@ -404,24 +322,13 @@ try {
                         "Waterpump/system#criticallylow",
 
                         [
-
-                            "RoofTopTankLevel" =>
-                            "LLow",
-
-                            "Description" =>
-                            "Roof Tank Low Low Level",
-
-                            "FaultCode" =>
-                            "SH-WPOE101006"
+                            "RoofTopTankLevel" => "LLow",
+                            "Description" => "Roof Tank Low Low Level",
                         ]
                     );
                 }
 
-                if (
-                    $label === 'ROOF_TANK_NORMAL'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'ROOF_TANK_NORMAL' && $currentStatus === 'ACTIVE') {
 
                     echo "[INFO] Roof Tank NORMAL\n";
 
@@ -431,17 +338,12 @@ try {
 
                         [
 
-                            "RoofTopTankLevel" =>
-                            "High"
+                            "RoofTopTankLevel" => "High"
                         ]
                     );
                 }
 
-                if (
-                    $label === 'ROOF_TANK_OVERFLOW'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'ROOF_TANK_OVERFLOW' && $currentStatus === 'ACTIVE') {
 
                     echo "[ALARM] Roof Tank OVERFLOW\n";
 
@@ -450,26 +352,15 @@ try {
                         "Waterpump/system#overflow",
 
                         [
-
-                            "RoofTopTankLevel" =>
-                            "HHigh",
-
-                            "Description" =>
-                            "Roof Tank Overflow",
-
-                            "FaultCode" =>
-                            "SH-WPOE101005"
+                            "RoofTopTankLevel" => "HHigh",
+                            "Description" => "Roof Tank Overflow",
                         ]
                     );
                 }
 
 
 
-                if (
-                    $label === 'SUCTION_TANK_LOW'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'SUCTION_TANK_LOW' && $currentStatus === 'ACTIVE') {
 
                     echo "[WARNING] Suction Tank LOW\n";
 
@@ -478,24 +369,13 @@ try {
                         "Waterpump/system#criticallylow",
 
                         [
-
-                            "SuctionTankLevel" =>
-                            "Low",
-
-                            "Description" =>
-                            "Suction Tank Low Level",
-
-                            "FaultCode" =>
-                            "SH-WPOE101006"
+                            "SuctionTankLevel" => "Low",
+                            "Description" => "Suction Tank Low Level",
                         ]
                     );
                 }
 
-                if (
-                    $label === 'SUCTION_TANK_NORMAL'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'SUCTION_TANK_NORMAL' && $currentStatus === 'ACTIVE') {
 
                     echo "[INFO] Suction Tank NORMAL\n";
 
@@ -504,18 +384,12 @@ try {
                         "Waterpump/system#reading",
 
                         [
-
-                            "SuctionTankLevel" =>
-                            "High"
+                            "SuctionTankLevel" => "High"
                         ]
                     );
                 }
 
-                if (
-                    $label === 'SUCTION_TANK_OVERFLOW'
-                    &&
-                    $currentStatus === 'ACTIVE'
-                ) {
+                if ($label === 'SUCTION_TANK_OVERFLOW' && $currentStatus === 'ACTIVE') {
 
                     echo "[ALARM] Suction Tank OVERFLOW\n";
 
@@ -524,15 +398,8 @@ try {
                         "Waterpump/system#overflow",
 
                         [
-
-                            "SuctionTankLevel" =>
-                            "HHigh",
-
-                            "Description" =>
-                            "Suction Tank Overflow",
-
-                            "FaultCode" =>
-                            "SH-WPOE101005"
+                            "SuctionTankLevel" => "HHigh",
+                            "Description" => "Suction Tank Overflow",
                         ]
                     );
                 }
@@ -541,8 +408,7 @@ try {
             }
 
 
-            $previousInputs[$label] =
-                $currentStatus;
+            $previousInputs[$label] = $currentStatus;
         }
 
         usleep(200000);

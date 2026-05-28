@@ -14,22 +14,18 @@ class CertificateManager
 
         $this->caCertPath =
             __DIR__
-            . '/../certs/ca.crt';
+            . '/../storage/certs/ca.crt';
 
         $this->clientCertPath =
             __DIR__
-            . '/../certs/server.crt';
+            . '/../storage/certs/server.crt';
 
         $this->clientKeyPath =
             __DIR__
-            . '/../certs/server.key';
+            . '/../storage/certs/server.key';
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Renew CA Certificate
-    |--------------------------------------------------------------------------
-    */
+    
 
     public function renewCACertificate(
         $certificate
@@ -43,11 +39,7 @@ class CertificateManager
         ) !== false;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Renew Client Certificate
-    |--------------------------------------------------------------------------
-    */
+   
 
     public function renewClientCertificate(
         $certificate,

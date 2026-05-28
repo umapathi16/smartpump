@@ -35,9 +35,16 @@ class IncomingCommandHandler
 
         foreach ($json['Commands'] as $cmd) {
 
+           
             $commandType = $cmd['CommandType'] ?? '';
 
             $commandId = $cmd['CommandId'] ?? '';
+
+            $senderId = $json['SenderId'] ?? config('device.sender_id');
+
+            $sensorId = $json['SensorId'] ?? config('device.sensor_id');
+
+            $resourcePath = $json['Resourcepath'] ?? config('device.resource_path');
 
             Logger::info(
                 "Command Received: {$commandType}",
@@ -141,17 +148,13 @@ class IncomingCommandHandler
 
                     $responsePayload = [
 
-                        "SenderId" =>
-                        config('device.sender_id'),
+                        "SenderId" => $senderId,
 
-                        "SensorId" =>
-                        config('device.sensor_id'),
+                        "SensorId" => $sensorId,
 
-                        "Resourcepath" =>
-                        config('device.resource_path'),
+                        "Resourcepath" => $resourcePath,
 
-                        "EventId" =>
-                        $commandId,
+                        "EventId" => $commandId,
 
                         "EventType" =>
                         "smartpump/ack#getschedulestartconfig",
@@ -179,14 +182,11 @@ class IncomingCommandHandler
 
                     $responsePayload = [
 
-                        "SenderId" =>
-                        config('device.sender_id'),
+                        "SenderId" => $senderId,
 
-                        "SensorId" =>
-                        config('device.sensor_id'),
+                        "SensorId" => $sensorId,
 
-                        "Resourcepath" =>
-                        config('device.resource_path'),
+                        "Resourcepath" => $resourcePath,
 
                         "EventId" =>
                         $commandId,
@@ -272,14 +272,11 @@ class IncomingCommandHandler
 
             $ackPayload = [
 
-                "SenderId" =>
-                config('device.sender_id'),
+                "SenderId" => $senderId,
 
-                "SensorId" =>
-                config('device.sensor_id'),
+                "SensorId" => $sensorId,
 
-                "Resourcepath" =>
-                config('device.resource_path'),
+                "Resourcepath" => $resourcePath,
 
                 "EventId" => $commandId,
 
