@@ -32,22 +32,19 @@ class InhibitScheduleEngine
 
         $schedules = $this->scheduleManager->getInhibitSchedules();
 
-        $currentDateTime = strtotime(date('Y-m-d H:i:s'));
+        $currentDate = date('Y-m-d');
+
+        $currentTime = date('H:i:s');
 
         foreach ($schedules as $schedule) {
 
-            $scheduleKey =
-                md5(
-                    json_encode($schedule)
-                );
+            $scheduleKey = md5(json_encode($schedule));
 
-            $startDateTime = strtotime($schedule['StartDate'] . ' ' . $schedule['StartTime']);
+            $isDateMatched = $currentDate >= $schedule['StartDate'] && $currentDate <= $schedule['EndDate'];
 
-            $endDateTime = strtotime($schedule['EndDate'] . ' ' . $schedule['EndTime']);
+            $isTimeMatched = $currentTime >= $schedule['StartTime'] && $currentTime <= $schedule['EndTime'];
 
-            // Validate Inhibit range
-            $isScheduleActive = $currentDateTime >= $startDateTime && $currentDateTime <= $endDateTime;
-
+            $isScheduleActive = $isDateMatched && $isTimeMatched;
             // Inhibit ACTIVE
 
             if ($isScheduleActive) {

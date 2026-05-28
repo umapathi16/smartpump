@@ -5,7 +5,7 @@
 | Smart Pump Gateway
 |--------------------------------------------------------------------------
 |
-| Version : v1.3.0
+| Version : v1.4.0
 | Updated : 2026-05-28
 |
 | Changes:
@@ -18,6 +18,7 @@
 | - Alarm cancel implemented 
 | - Schedule start and Inhibit Schedules are implemented
 | - Certificate renewal implemented
+| - Aligned Recurring daily schedule time range for Schedule start and Inhibit 
 */
 
 require_once __DIR__ . '/config/config.php';
@@ -32,7 +33,7 @@ require_once __DIR__ . '/classes/ScheduleEngine.php';
 require_once __DIR__. '/classes/InhibitScheduleEngine.php';
 
 echo "====================================\n";
-echo "Version: v1.2.0\n";
+echo "Version: v1.4.0\n";
 echo " SMART PUMP MQTT GATEWAY STARTED\n";
 echo "====================================\n";
 

@@ -23,7 +23,10 @@ class ScheduleEngine
 
         $schedules = $this->scheduleManager->getStartSchedules();
 
-        $currentDateTime = strtotime(date('Y-m-d H:i:s'));
+        $currentDate = date('Y-m-d');
+
+        $currentTime = date('H:i:s');
+
 
         foreach ($schedules as $schedule) {
 
@@ -31,13 +34,11 @@ class ScheduleEngine
 
             $scheduleKey = md5(json_encode($schedule));
 
-            $startDateTime = strtotime($schedule['StartDate'] . ' ' . $schedule['StartTime']);
+            $isDateMatched = $currentDate >= $schedule['StartDate'] && $currentDate <= $schedule['EndDate'];
+            
+            $isTimeMatched = $currentTime >= $schedule['StartTime'] && $currentTime <= $schedule['EndTime'];
 
-            $endDateTime = strtotime($schedule['EndDate'] . ' ' . $schedule['EndTime']);
-
-            // Validate schedule range
-
-            $isScheduleActive =  $currentDateTime >= $startDateTime && $currentDateTime <= $endDateTime;
+            $isScheduleActive = $isDateMatched && $isTimeMatched;
 
             if ($isScheduleActive) {
 
